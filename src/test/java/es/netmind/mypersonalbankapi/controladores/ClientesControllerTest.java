@@ -14,10 +14,28 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 class ClientesControllerTest {
+
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
+    private final PrintStream originalErr = System.err;
+
+    @BeforeEach
+    public void setUpStreams() {
+        System.setOut(new PrintStream(outContent));
+        System.setErr(new PrintStream(errContent));
+    }
 
     @Test
     void dado_clienteValido_cuando_alta_cliente_entonces_se_añade_en_repositorio() throws Exception {
@@ -38,24 +56,29 @@ class ClientesControllerTest {
 
     }
 
-
     @ParameterizedTest
-    @CsvSource({"personal, Juan Juanez, jjj@.com, Calle JJ 1, 2023-10-23,"})
-    void dado_clienteNoValido_cuando_alta_cliente_entonces_lanzar_excepcion(String tipoCliente, String nombre,
+    @CsvSource({"personal,J,jjj@.com,Calle JJ 1,2023-10-23,12345678J",
+                "personal,Juan Juanez,jjj.com,Calle JJ 1,2023-10-23,12345678J",
+                "personal,Juan Juanez,jjj@.com,Calle JJ 1,2023-10-23,"})
+
+    void dado_clienteNoValido_cuando_alta_cliente_entonces_NOK(String tipoCliente, String nombre,
                                                                             String email, String direccion, LocalDate fechaHoy, String dni) throws DateTimeException, Exception, ClienteException, NumberFormatException {
         //Dado Parametro entrada
         String [] persona={tipoCliente, nombre, email, direccion, fechaHoy.toString(), dni};
 
         System.out.println("persona: " + persona);
 
+        //Cuando
+        ClientesController.add(persona);
+
         //Entonces
-        assertThrows(Exception.class, () -> {
-            //Cuando
-            ClientesController.add(persona);
-        });
+        System.out.println(outContent);
+        assertThat(outContent.toString(), containsString("Cliente NO válido"));
+    }
 
-
-
-
+    @AfterEach
+    public void restoreStreams() {
+        System.setOut(originalOut);
+        System.setErr(originalErr);
     }
 }
