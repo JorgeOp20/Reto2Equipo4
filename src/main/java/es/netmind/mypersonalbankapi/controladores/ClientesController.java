@@ -12,11 +12,21 @@ import java.util.List;
 
 public class ClientesController {
 
-    private static IClientesRepo clientesRepo = ClientesInMemoryRepo.getInstance();
+    //private static IClientesRepo clientesRepo = ClientesInMemoryRepo.getInstance();
+    private static IClientesRepo clientesRepo;
+
+    static {
+        try {
+            clientesRepo = ClientesInDBRepo.getInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static ICuentasRepo cuentasRepo = CuentasInMemoryRepo.getInstance();
     private static IPrestamosRepo prestamosRepo = PrestamosInMemoryRepo.getInstance();
 
-    public static void mostrarLista() {
+    public static void mostrarLista() throws Exception {
         System.out.println("\nLista de clientes:");
         System.out.println("───────────────────────────────────");
         List<Cliente> clientes = clientesRepo.getAll();
