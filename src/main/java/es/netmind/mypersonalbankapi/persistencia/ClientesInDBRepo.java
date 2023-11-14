@@ -35,13 +35,12 @@ public class ClientesInDBRepo implements IClientesRepo{
                 Connection conn = DriverManager.getConnection(db_url);
                 PreparedStatement stmt = conn.prepareStatement("SELECT * FROM cliente");
         ) {
-
             String [] uniNeg = null;
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 String tipoCliente = rs.getString("dtype");
-                if (tipoCliente == "Personal") {
+                if (tipoCliente.equals("Personal")) {
                     clientes.add(
                             new Personal(
                                     rs.getInt("id"),
@@ -52,12 +51,9 @@ public class ClientesInDBRepo implements IClientesRepo{
                                     rs.getBoolean("activo"),
                                     rs.getBoolean("moroso"),
                                     rs.getString("dni")
-
                             )
-
                     );
                 } else {
-
                     if (rs.getString("unidades_de_negocio") != null) uniNeg = rs.getString("unidades_de_negocio").split("");
                     clientes.add(
                             new Empresa(
@@ -72,9 +68,7 @@ public class ClientesInDBRepo implements IClientesRepo{
                                     uniNeg
 
                             )
-
                     );
-
                 }
             }
 
@@ -83,7 +77,7 @@ public class ClientesInDBRepo implements IClientesRepo{
             throw new Exception(e);
         }
 
-
+        //System.out.println("Clientes : " + clientes);
         return clientes;
     }
 

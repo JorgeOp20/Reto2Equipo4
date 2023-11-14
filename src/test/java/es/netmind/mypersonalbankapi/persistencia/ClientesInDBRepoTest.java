@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +22,7 @@ class ClientesInDBRepoTest {
 
     @BeforeEach
     void setUp() throws Exception {
-//        repo = new UsuarioInMemoryRepository();
+        //repo = new ClientesInMemoryRepo();
         repo = new ClientesInDBRepo();
     }
 
@@ -39,7 +41,7 @@ class ClientesInDBRepoTest {
     @Test
     void dadoAltaNuevoClienteTipoEmpresaCuandoClienteValidoEntoncesOK() throws Exception {
 
-        Cliente altaUsuario = new Empresa(null, "Empresa 4", "e4@gmai.com", "Calle 4", LocalDate.now(), true, false, "Z12345678", null );
+        Cliente altaUsuario = new Empresa(null, "Empresa 44", "e4@gmai.com", "Calle 4", LocalDate.now(), true, false, "Z12345678", null );
         repo.addClient(altaUsuario);
 
         System.out.println(altaUsuario);
@@ -50,8 +52,13 @@ class ClientesInDBRepoTest {
 
     @Test
     void dadoUnUsuarioCuandoQuiereListaClientesEntoncesOK() throws Exception {
+        List<Cliente> clientes;
 
+        clientes = repo.getAll();
 
+        System.out.println(clientes);
+
+        assertTrue(true);
 
     }
 

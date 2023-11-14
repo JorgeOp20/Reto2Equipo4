@@ -26,7 +26,7 @@ public class ClientesInMemoryRepo implements IClientesRepo {
         }
     }
 
-    private ClientesInMemoryRepo() {
+    ClientesInMemoryRepo() {
     }
 
     public static ClientesInMemoryRepo getInstance() {
