@@ -51,6 +51,17 @@ class ClientesInDBRepoTest {
     }
 
     @Test
+    void dadoAltaNuevoClienteCuandoClienteNoValidoEntoncesExcepcion() throws Exception {
+
+        Cliente altaUsuario = null;
+
+        assertThrows(Exception.class, ()->{
+            //Cuando
+            repo.addClient(altaUsuario);
+        });
+    }
+
+    @Test
     void dadoUnUsuarioCuandoQuiereListaClientesEntoncesOK() throws Exception {
         List<Cliente> clientes;
 
