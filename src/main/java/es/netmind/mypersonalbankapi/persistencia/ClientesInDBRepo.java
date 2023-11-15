@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ClientesInDBRepo implements IClientesRepo{
     private static ClientesInDBRepo instance;
-    private final static List<Cliente> clientes = null;
+
 
     private static String db_url = null;
 
@@ -35,7 +35,7 @@ public class ClientesInDBRepo implements IClientesRepo{
 
         try (
                 Connection conn = DriverManager.getConnection(db_url);
-                PreparedStatement stmt = conn.prepareStatement("SELECT * FROM cliente");
+                PreparedStatement stmt = conn.prepareStatement("SELECT * FROM cliente")
         ) {
             String [] uniNeg = null;
             ResultSet rs = stmt.executeQuery();
@@ -137,7 +137,7 @@ public class ClientesInDBRepo implements IClientesRepo{
 
         try (
                 Connection conn = DriverManager.getConnection(db_url);
-                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
             boolean TipoPersonal = cliente instanceof Personal;
 
