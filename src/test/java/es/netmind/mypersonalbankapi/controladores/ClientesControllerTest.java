@@ -3,7 +3,7 @@ package es.netmind.mypersonalbankapi.controladores;
 import es.netmind.mypersonalbankapi.exceptions.ClienteException;
 import es.netmind.mypersonalbankapi.modelos.clientes.Cliente;
 import es.netmind.mypersonalbankapi.modelos.clientes.Personal;
-import es.netmind.mypersonalbankapi.persistencia.ClientesInMemoryRepo;
+import es.netmind.mypersonalbankapi.persistencia.*;
 import es.netmind.mypersonalbankapi.persistencia.IClientesRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,20 +39,26 @@ class ClientesControllerTest {
 
     @Test
     void dado_clienteValido_cuando_alta_cliente_entonces_se_añade_en_repositorio() throws Exception {
+        System.out.println("Prueba inicial!!!!!!!");
         //Dado
         String fechaHoy = String.valueOf(LocalDate.now());
         System.out.println("Fecha:" + fechaHoy );
 
         String [] persona={"personal", "Juan Juanez", "jj@j.com", "Calle JJ 1", fechaHoy, "12345678J"};
 
-       IClientesRepo clientesRepo = ClientesInMemoryRepo.getInstance();
+       //IClientesRepo clientesRepo = ClientesInMemoryRepo.getInstance();
+       IClientesRepo clientesRepo = ClientesInDBRepo.getInstance();
        List<Cliente> clientes = clientesRepo.getAll();
        int numClientes = clientes.size();
+        System.out.println("Numero clientes ini: " +numClientes);
         //Cuando
         ClientesController.add(persona);
+        List<Cliente> clientes_new = clientesRepo.getAll();
+
+        System.out.println("NumClientes nuevo: " + clientes_new.size() );
 
         //Entonces
-        assertEquals(numClientes+1, clientes.size());
+        assertEquals(numClientes+1, clientes_new.size());
 
     }
 

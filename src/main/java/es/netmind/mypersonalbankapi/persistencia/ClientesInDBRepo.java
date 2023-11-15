@@ -1,5 +1,7 @@
 package es.netmind.mypersonalbankapi.persistencia;
 
+import es.netmind.mypersonalbankapi.exceptions.ClienteException;
+import es.netmind.mypersonalbankapi.exceptions.ErrorCode;
 import es.netmind.mypersonalbankapi.modelos.clientes.Cliente;
 import es.netmind.mypersonalbankapi.modelos.clientes.Empresa;
 import es.netmind.mypersonalbankapi.modelos.clientes.Personal;
@@ -81,9 +83,52 @@ public class ClientesInDBRepo implements IClientesRepo{
         return clientes;
     }
 
-    @Override
+     @Override
     public Cliente getClientById(Integer id) throws Exception {
-        return null;
+        Cliente cliente = null;
+        String [] uniNeg = null;
+
+        try (
+                Connection conn = DriverManager.getConnection(db_url);
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM cliente c WHERE c.id ='" + id + "' LIMIT 1")
+        ) {
+            if (rs.next()) {
+                String tipoCliente = rs.getString("dtype");
+                if (tipoCliente.equals("Personal")) {
+                    cliente = new Personal(
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            rs.getString("email"),
+                            rs.getString("direccion"),
+                            rs.getDate("alta").toLocalDate(),
+                            rs.getBoolean("activo"),
+                            rs.getBoolean("moroso"),
+                            rs.getString("dni")
+                    );
+                } else {
+                    if (rs.getString("unidades_de_negocio") != null)
+                        uniNeg = rs.getString("unidades_de_negocio").split("");
+                    cliente = new Empresa(
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            rs.getString("email"),
+                            rs.getString("direccion"),
+                            rs.getDate("alta").toLocalDate(),
+                            rs.getBoolean("activo"),
+                            rs.getBoolean("moroso"),
+                            rs.getString("cif"),
+                            uniNeg
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception(e);
+        }
+
+        return cliente;
     }
 
     @Override
@@ -124,6 +169,10 @@ public class ClientesInDBRepo implements IClientesRepo{
 
             }
 
+            if (!cliente.validar()) {
+                System.out.println("Cliente no valido en repositorio");
+                throw new ClienteException("Cliente no válido", ErrorCode.INVALIDCLIENT);
+            }
 
             int rows = stmt.executeUpdate();
 

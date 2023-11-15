@@ -30,7 +30,7 @@ class ClientesInDBRepoTest {
 
 
     @ParameterizedTest
-    @CsvSource({"Personal,Equipo4_Nuevo,e4@gmail.com,Calle cuatro,12345678Z", "Empresa,Empresa4 SA,emp4@gmail.com,Calle 44,A12345678"})
+    @CsvSource({"Personal,Equipo4_Nuevo,e4@gmail.com,Calle cuatro,12345678Z", "Empresa,Empresa4 SA,emp4@gmail.com,Calle Empresa cuatro ,B12345678"})
     void dadoAltaNuevoClienteCuandoClienteValidoEntoncesOK(String tipoCliente, String nombre, String mail, String direccion, String idDocumento) throws Exception {
 
         Cliente altaUsuario = null;
@@ -64,10 +64,30 @@ class ClientesInDBRepoTest {
         List<Cliente> clientes;
 
         clientes = repo.getAll();
+        System.out.println("Numero de clientes: " +clientes.size());
 
         System.out.println(clientes);
 
         assertTrue(true);
+
+    }
+
+    @Test
+    void dadoUnUsuarioCuandoQuiereConsultarUnClienteEntoncesOK() throws Exception {
+        Cliente cliente;
+
+        cliente = repo.getClientById(1);
+
+        System.out.println(cliente);
+
+        assertThat(cliente.getId(), is(1));
+
+    }
+
+    @Test
+    void dadoUnUsuarioCuandoQuiereConsultarUnClienteNoExistenteEntoncesClienteNull() throws Exception {
+        Cliente cliente = repo.getClientById(998);
+        assertNull(cliente);
 
     }
 
