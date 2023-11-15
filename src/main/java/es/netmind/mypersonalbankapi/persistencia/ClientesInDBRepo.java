@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ClientesInDBRepo implements IClientesRepo{
     private static ClientesInDBRepo instance;
-    private final static List<Cliente> clientes = null;
+
 
     private static String db_url = null;
 
@@ -33,7 +33,7 @@ public class ClientesInDBRepo implements IClientesRepo{
 
         try (
                 Connection conn = DriverManager.getConnection(db_url);
-                PreparedStatement stmt = conn.prepareStatement("SELECT * FROM cliente");
+                PreparedStatement stmt = conn.prepareStatement("SELECT * FROM cliente")
         ) {
             String [] uniNeg = null;
             ResultSet rs = stmt.executeQuery();
@@ -83,7 +83,50 @@ public class ClientesInDBRepo implements IClientesRepo{
 
     @Override
     public Cliente getClientById(Integer id) throws Exception {
-        return null;
+        Cliente cliente = null;
+        String [] uniNeg = null;
+
+        try (
+                Connection conn = DriverManager.getConnection(db_url);
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM cliente c WHERE c.id ='" + id + "' LIMIT 1")
+        ) {
+            if (rs.next()) {
+                String tipoCliente = rs.getString("dtype");
+                if (tipoCliente.equals("Personal")) {
+                    cliente = new Personal(
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            rs.getString("email"),
+                            rs.getString("direccion"),
+                            rs.getDate("alta").toLocalDate(),
+                            rs.getBoolean("activo"),
+                            rs.getBoolean("moroso"),
+                            rs.getString("dni")
+                    );
+                } else {
+                    if (rs.getString("unidades_de_negocio") != null)
+                        uniNeg = rs.getString("unidades_de_negocio").split("");
+                    cliente = new Empresa(
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            rs.getString("email"),
+                            rs.getString("direccion"),
+                            rs.getDate("alta").toLocalDate(),
+                            rs.getBoolean("activo"),
+                            rs.getBoolean("moroso"),
+                            rs.getString("cif"),
+                            uniNeg
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception(e);
+        }
+
+        return cliente;
     }
 
     @Override
@@ -92,7 +135,7 @@ public class ClientesInDBRepo implements IClientesRepo{
 
         try (
                 Connection conn = DriverManager.getConnection(db_url);
-                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
             boolean TipoPersonal = cliente instanceof Personal;
 

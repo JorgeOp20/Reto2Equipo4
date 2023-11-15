@@ -9,7 +9,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -68,6 +67,25 @@ class ClientesInDBRepoTest {
         System.out.println(clientes);
 
         assertTrue(true);
+
+    }
+
+    @Test
+    void dadoUnUsuarioCuandoQuiereConsultarUnClienteEntoncesOK() throws Exception {
+        Cliente cliente;
+
+        cliente = repo.getClientById(1);
+
+        System.out.println(cliente);
+
+        assertThat(cliente.getId(), is(1));
+
+    }
+
+    @Test
+    void dadoUnUsuarioCuandoQuiereConsultarUnClienteNoExistenteEntoncesClienteNull() throws Exception {
+        Cliente cliente = repo.getClientById(998);
+        assertNull(cliente);
 
     }
 
