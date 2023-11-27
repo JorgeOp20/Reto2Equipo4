@@ -6,27 +6,37 @@ import es.netmind.mypersonalbankapi.modelos.clientes.Cliente;
 import es.netmind.mypersonalbankapi.modelos.clientes.Empresa;
 import es.netmind.mypersonalbankapi.modelos.clientes.Personal;
 import es.netmind.mypersonalbankapi.properties.PropertyValues;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
+//@Repository
 public class ClientesInDBRepo implements IClientesRepo{
-    private static ClientesInDBRepo instance;
+
+    //@Autowired
+   // private static ClientesInDBRepo instance;
+    // private static ClientesInDBRepo instance;
 
 
-    private static String db_url = null;
+    //@Value("${db_url}")
+    private String db_url;
 
-    public ClientesInDBRepo() throws Exception {
+   /* public ClientesInDBRepo() throws Exception {
         PropertyValues props = new PropertyValues();
         db_url = props.getPropValues().getProperty("db_url");
 
-    }
+    }*/
 
-     public static ClientesInDBRepo getInstance() throws Exception {
+   /*  public static ClientesInDBRepo getInstance() throws Exception {
         if (instance == null) instance = new ClientesInDBRepo();
         return instance;
-    }
+    }*/
 
 
     @Override

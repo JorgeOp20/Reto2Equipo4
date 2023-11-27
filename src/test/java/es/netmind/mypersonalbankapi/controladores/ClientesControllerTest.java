@@ -1,11 +1,13 @@
 package es.netmind.mypersonalbankapi.controladores;
 
+import es.netmind.mypersonalbankapi.config.SpringConfig;
 import es.netmind.mypersonalbankapi.exceptions.ClienteException;
 import es.netmind.mypersonalbankapi.modelos.clientes.Cliente;
 import es.netmind.mypersonalbankapi.modelos.clientes.Personal;
 import es.netmind.mypersonalbankapi.persistencia.*;
 import es.netmind.mypersonalbankapi.persistencia.IClientesRepo;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -16,15 +18,29 @@ import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+
 import static org.hamcrest.Matchers.containsString;
+
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {SpringConfig.class})
 class ClientesControllerTest {
+
+    @Autowired
+    private IClientesRepo clientesRepo;
+
+    @Autowired
+    private ClientesController clCont;
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -35,6 +51,12 @@ class ClientesControllerTest {
     public void setUpStreams() {
         System.setOut(new PrintStream(outContent));
         System.setErr(new PrintStream(errContent));
+    }
+    @Test
+    void testBeans() {
+        assertThat(clientesRepo, notNullValue());
+        assertThat(clCont, notNullValue());
+        assertThat(clCont.getClientesRepo(), notNullValue());
     }
 
     @Test
@@ -47,7 +69,7 @@ class ClientesControllerTest {
         String [] persona={"personal", "Juan Juanez", "jj@j.com", "Calle JJ 1", fechaHoy, "12345678J"};
 
        //IClientesRepo clientesRepo = ClientesInMemoryRepo.getInstance();
-       IClientesRepo clientesRepo = ClientesInDBRepo.getInstance();
+       //IClientesRepo clientesRepo = ClientesInDBRepo.getInstance();
        List<Cliente> clientes = clientesRepo.getAll();
        int numClientes = clientes.size();
         System.out.println("Numero clientes ini: " +numClientes);

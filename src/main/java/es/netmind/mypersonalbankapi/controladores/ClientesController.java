@@ -5,26 +5,32 @@ import es.netmind.mypersonalbankapi.modelos.clientes.Cliente;
 import es.netmind.mypersonalbankapi.modelos.prestamos.Prestamo;
 import es.netmind.mypersonalbankapi.persistencia.*;
 import es.netmind.mypersonalbankapi.utils.ClientesUtils;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
 
+//@Setter
+//@Service
 public class ClientesController {
 
     //private static IClientesRepo clientesRepo = ClientesInMemoryRepo.getInstance();
+   // @Autowired
     private static IClientesRepo clientesRepo;
 
-    static {
+    /*static {
         try {
             clientesRepo = ClientesInDBRepo.getInstance();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
-    private static ICuentasRepo cuentasRepo = CuentasInMemoryRepo.getInstance();
-    private static IPrestamosRepo prestamosRepo = PrestamosInMemoryRepo.getInstance();
+    //private static ICuentasRepo cuentasRepo = CuentasInMemoryRepo.getInstance();
+    //private static IPrestamosRepo prestamosRepo = PrestamosInMemoryRepo.getInstance();
 
     public static void mostrarLista() throws Exception {
         System.out.println("\nLista de clientes:");
@@ -74,7 +80,6 @@ public class ClientesController {
             System.out.println("ME voy por aqui 2");
             System.out.println("⚠ LAS FECHAS DEBEN TENER EL FORMATO yyyy-mm-dd, por ejemplo 2023-12-01 ⚠");
         } catch (Exception e) {
-            System.out.println("ME voy por aqui 3");
             System.out.println("Oops ha habido un problema, inténtelo más tarde 😞!");
             e.printStackTrace();
         }
@@ -147,5 +152,13 @@ public class ClientesController {
         }
 
 
+    }
+
+    public static void setClientesRepo(IClientesRepo clientesRepo) {
+        ClientesController.clientesRepo = clientesRepo;
+    }
+
+    public static IClientesRepo getClientesRepo() {
+        return clientesRepo;
     }
 }
