@@ -11,8 +11,8 @@ import es.netmind.mypersonalbankapi.persistencia.PrestamosInMemoryRepo;
 import java.util.List;
 
 public class PrestamosController {
-    private static IPrestamosRepo prestamosRepo = PrestamosInMemoryRepo.getInstance();
-    private static IClientesRepo clientesRepo = ClientesInMemoryRepo.getInstance();
+    private static IPrestamosRepo prestamosRepo;
+    private static IClientesRepo clientesRepo;
 
     public static void mostrarLista(Integer uid) {
         System.out.println("\nLista de prestamos del cliente: " + uid);

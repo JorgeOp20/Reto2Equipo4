@@ -41,6 +41,7 @@ public class ClientesInDBRepo implements IClientesRepo{
 
     @Override
     public List<Cliente> getAll() throws Exception {
+        System.out.println("BASE DE DATOS");
         List<Cliente> clientes = new ArrayList<>();
 
         try (

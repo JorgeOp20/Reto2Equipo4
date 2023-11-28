@@ -36,6 +36,7 @@ public class ClientesInMemoryRepo implements IClientesRepo {
 
     @Override
     public List<Cliente> getAll() {
+        System.out.println("EN MEMORIA");
         return clientes;
     }
 

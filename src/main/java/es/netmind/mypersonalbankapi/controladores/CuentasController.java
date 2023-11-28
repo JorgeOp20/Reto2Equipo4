@@ -11,8 +11,9 @@ import es.netmind.mypersonalbankapi.persistencia.ICuentasRepo;
 import java.util.List;
 
 public class CuentasController {
-    private static ICuentasRepo cuentasRepo = CuentasInMemoryRepo.getInstance();
-    private static IClientesRepo clientesRepo = ClientesInMemoryRepo.getInstance();
+    private static ICuentasRepo cuentasRepo;
+
+    private static IClientesRepo clientesRepo;
 
     public static void mostrarLista(Integer uid) {
         System.out.println("\nLista de cuentas del cliente: " + uid);

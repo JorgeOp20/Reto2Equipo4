@@ -6,6 +6,7 @@ import es.netmind.mypersonalbankapi.modelos.clientes.Cliente;
 import es.netmind.mypersonalbankapi.modelos.cuentas.Ahorro;
 import es.netmind.mypersonalbankapi.modelos.cuentas.Corriente;
 import es.netmind.mypersonalbankapi.modelos.cuentas.Cuenta;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.InvalidObjectException;
 import java.time.LocalDate;
@@ -14,9 +15,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class CuentasInMemoryRepo implements ICuentasRepo {
-    private static CuentasInMemoryRepo instance;
+    //private static CuentasInMemoryRepo instance;
     private static List<Cuenta> cuentas;
-    private static IClientesRepo clientesRepo = ClientesInMemoryRepo.getInstance();
+
+    private static IClientesRepo clientesRepo;
 
     static {
         cuentas = new ArrayList<>();
@@ -27,6 +29,7 @@ public class CuentasInMemoryRepo implements ICuentasRepo {
             cuentas.add(new Ahorro(4, LocalDate.now(), 300.0, 1.1, 0.2));
 
             /* Asociamos cuentas */
+
             List<Cliente> clientes = clientesRepo.getAll();
             clientes.get(0).asociarCuenta(cuentas.get(0));
             clientes.get(0).asociarCuenta(cuentas.get(3));
@@ -34,17 +37,18 @@ public class CuentasInMemoryRepo implements ICuentasRepo {
             clientes.get(2).asociarCuenta(cuentas.get(1));
 
         } catch (Exception e) {
+            //e.printStackTrace();
             System.out.println("⚠ Error al crear cuentas: " + e.getMessage());
         }
     }
 
-    private CuentasInMemoryRepo() {
+    public CuentasInMemoryRepo() {
     }
 
-    public static CuentasInMemoryRepo getInstance() {
+   /* public static CuentasInMemoryRepo getInstance() {
         if (instance == null) instance = new CuentasInMemoryRepo();
         return instance;
-    }
+    }*/
 
     @Override
     public List<Cuenta> getAll() {

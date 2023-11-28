@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class PrestamosInMemoryRepo implements IPrestamosRepo {
-    private static PrestamosInMemoryRepo instance;
+  //  private static PrestamosInMemoryRepo instance;
     private static List<Prestamo> prestamos;
-    private static IClientesRepo clientesRepo = ClientesInMemoryRepo.getInstance();
+    private static IClientesRepo clientesRepo;
 
     static {
         prestamos = new ArrayList<>();
@@ -31,13 +31,13 @@ public class PrestamosInMemoryRepo implements IPrestamosRepo {
         }
     }
 
-    private PrestamosInMemoryRepo() {
+    public PrestamosInMemoryRepo() {
     }
 
-    public static PrestamosInMemoryRepo getInstance() {
+    /*public static PrestamosInMemoryRepo getInstance() {
         if (instance == null) instance = new PrestamosInMemoryRepo();
         return instance;
-    }
+    }*/
 
     @Override
     public List<Prestamo> getAll() {

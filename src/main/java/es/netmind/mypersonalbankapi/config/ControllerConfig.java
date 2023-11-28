@@ -16,7 +16,7 @@ public class ControllerConfig {
     @Autowired
     IClientesRepo clientesRepo;
 
-   @Bean
+    @Bean
     public ClientesController getClientesCont() throws Exception {
         ClientesController clCont = new ClientesController();
         clCont.setClientesRepo(clientesRepo);
