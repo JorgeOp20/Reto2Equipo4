@@ -8,6 +8,6 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource("classpath:config.properties")
 @Import({ReposConfig.class, ControllerConfig.class, PropertiesConfig.class})
-@ComponentScan(basePackages = {"es.netmind.mypersonalbankapi.controladores"})
+@ComponentScan(basePackages = {"es.netmind.mypersonalbankapi.controladores", "es.netmind.mypersonalbankapi.persistencia"})
 public class SpringConfig {
 }

@@ -5,16 +5,21 @@ import es.netmind.mypersonalbankapi.exceptions.ErrorCode;
 import es.netmind.mypersonalbankapi.modelos.clientes.Cliente;
 import es.netmind.mypersonalbankapi.modelos.clientes.Empresa;
 import es.netmind.mypersonalbankapi.modelos.clientes.Personal;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
+@Profile("dev")
 public class ClientesInMemoryRepo implements IClientesRepo {
-    private static ClientesInMemoryRepo instance;
-    private final static List<Cliente> clientes;
 
-    static {
+    private final List<Cliente> clientes;
+
+    ClientesInMemoryRepo() {
+        System.out.println("Usando ClientesInMemoryRepo");
         clientes = new ArrayList<>();
         try {
             clientes.add(new Personal(1, "Juan Juanez", "jj@j.com", "Calle JJ 1", LocalDate.now(), true, false, "12345678J"));
@@ -26,14 +31,6 @@ public class ClientesInMemoryRepo implements IClientesRepo {
         }
     }
 
-    ClientesInMemoryRepo() {
-    }
-
-    public static ClientesInMemoryRepo getInstance() {
-        if (instance == null) instance = new ClientesInMemoryRepo();
-        return instance;
-    }
-
     @Override
     public List<Cliente> getAll() {
         System.out.println("EN MEMORIA");
@@ -42,6 +39,7 @@ public class ClientesInMemoryRepo implements IClientesRepo {
 
     @Override
     public Cliente getClientById(Integer id) throws Exception {
+        System.out.println("InMemory");
         if (clientes != null) {
             for (Cliente c : clientes) {
                 if (c.getId() == id) return c;

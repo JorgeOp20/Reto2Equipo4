@@ -22,6 +22,4 @@ public class ControllerConfig {
         clCont.setClientesRepo(clientesRepo);
         return clCont;
     }
-
-
 }

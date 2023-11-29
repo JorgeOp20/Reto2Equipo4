@@ -7,28 +7,40 @@ import es.netmind.mypersonalbankapi.persistencia.ClientesInMemoryRepo;
 import es.netmind.mypersonalbankapi.persistencia.CuentasInMemoryRepo;
 import es.netmind.mypersonalbankapi.persistencia.IClientesRepo;
 import es.netmind.mypersonalbankapi.persistencia.ICuentasRepo;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Getter
+@Setter
+@Service
 public class CuentasController {
-    private static ICuentasRepo cuentasRepo;
+    @Autowired
+    private ICuentasRepo cuentasRepo;
 
-    private static IClientesRepo clientesRepo;
+    @Autowired
+    private IClientesRepo clientesRepo;
 
-    public static void mostrarLista(Integer uid) {
+    public void mostrarLista(Integer uid) {
         System.out.println("\nLista de cuentas del cliente: " + uid);
         System.out.println("───────────────────────────────────");
 
         try {
+            System.out.println("MostrarLista, antes cuentas");
             List<Cuenta> cuentas = cuentasRepo.getAccountsByClient(uid);
+            System.out.println("MostrarLista, cuentas");
             if (cuentas != null && cuentas.size() > 0) System.out.println(cuentas);
             else System.out.println("El cliente no tiene cuentas!");
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Cliente NO encontrado 😞!");
         }
     }
 
-    public static void mostrarDetalle(Integer uid, Integer aid) {
+    public void mostrarDetalle(Integer uid, Integer aid) {
         System.out.println("\nDetalle de cuenta: " + aid + ", del cliente: " + uid);
         System.out.println("───────────────────────────────────");
 
@@ -40,7 +52,7 @@ public class CuentasController {
         }
     }
 
-    public static void eliminar(Integer uid, Integer aid) {
+    public void eliminar(Integer uid, Integer aid) {
         System.out.println("\nBorrando cuenta: " + aid + ", para cliente: " + uid);
         System.out.println("───────────────────────────────────");
 
@@ -61,14 +73,14 @@ public class CuentasController {
 
     }
 
-    public static void add(Integer uid, String[] args) {
+    public void add(Integer uid, String[] args) {
         System.out.println("uid: " + uid);
         for (String arg : args) {
             System.out.println(arg);
         }
     }
 
-    public static void actualizar(Integer uid, Integer aid, String[] args) {
+    public void actualizar(Integer uid, Integer aid, String[] args) {
         System.out.println("uid: " + uid);
         System.out.println("aid: " + aid);
         for (String arg : args) {

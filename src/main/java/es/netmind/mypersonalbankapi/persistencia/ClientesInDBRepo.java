@@ -17,10 +17,10 @@ import java.util.List;
 
 @Setter
 //@Repository
-public class ClientesInDBRepo implements IClientesRepo{
+public class ClientesInDBRepo implements IClientesRepo {
 
     //@Autowired
-   // private static ClientesInDBRepo instance;
+    // private static ClientesInDBRepo instance;
     // private static ClientesInDBRepo instance;
 
 
@@ -48,7 +48,7 @@ public class ClientesInDBRepo implements IClientesRepo{
                 Connection conn = DriverManager.getConnection(db_url);
                 PreparedStatement stmt = conn.prepareStatement("SELECT * FROM cliente")
         ) {
-            String [] uniNeg = null;
+            String[] uniNeg = null;
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -67,7 +67,8 @@ public class ClientesInDBRepo implements IClientesRepo{
                             )
                     );
                 } else {
-                    if (rs.getString("unidades_de_negocio") != null) uniNeg = rs.getString("unidades_de_negocio").split("");
+                    if (rs.getString("unidades_de_negocio") != null)
+                        uniNeg = rs.getString("unidades_de_negocio").split("");
                     clientes.add(
                             new Empresa(
                                     rs.getInt("id"),
@@ -94,11 +95,11 @@ public class ClientesInDBRepo implements IClientesRepo{
         return clientes;
     }
 
-     @Override
+    @Override
     public Cliente getClientById(Integer id) throws Exception {
         Cliente cliente = null;
-        String [] uniNeg = null;
-
+        String[] uniNeg = null;
+        System.out.println("pasando por getClientById");
         try (
                 Connection conn = DriverManager.getConnection(db_url);
                 Statement stmt = conn.createStatement();

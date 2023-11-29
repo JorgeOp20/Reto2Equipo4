@@ -6,21 +6,29 @@ import es.netmind.mypersonalbankapi.modelos.clientes.Cliente;
 import es.netmind.mypersonalbankapi.modelos.cuentas.Ahorro;
 import es.netmind.mypersonalbankapi.modelos.cuentas.Corriente;
 import es.netmind.mypersonalbankapi.modelos.cuentas.Cuenta;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
-import java.io.InvalidObjectException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
+//@Repository
+//@Profile("dev")
+@Getter
+@Setter
 public class CuentasInMemoryRepo implements ICuentasRepo {
     //private static CuentasInMemoryRepo instance;
-    private static List<Cuenta> cuentas;
+    private List<Cuenta> cuentas;
 
-    private static IClientesRepo clientesRepo;
+    //   @Autowired
+    private IClientesRepo clientesRepo;
 
-    static {
+    public CuentasInMemoryRepo(IClientesRepo clientesRepo) {
+        this.clientesRepo=clientesRepo;
         cuentas = new ArrayList<>();
         try {
             cuentas.add(new Ahorro(1, LocalDate.now(), 100.0, 1.1, 0.2));
@@ -31,18 +39,17 @@ public class CuentasInMemoryRepo implements ICuentasRepo {
             /* Asociamos cuentas */
 
             List<Cliente> clientes = clientesRepo.getAll();
+            System.out.println(clientes);
             clientes.get(0).asociarCuenta(cuentas.get(0));
             clientes.get(0).asociarCuenta(cuentas.get(3));
             clientes.get(1).asociarCuenta(cuentas.get(2));
             clientes.get(2).asociarCuenta(cuentas.get(1));
+            System.out.println(clientes);
 
         } catch (Exception e) {
             //e.printStackTrace();
             System.out.println("⚠ Error al crear cuentas: " + e.getMessage());
         }
-    }
-
-    public CuentasInMemoryRepo() {
     }
 
    /* public static CuentasInMemoryRepo getInstance() {
@@ -104,8 +111,9 @@ public class CuentasInMemoryRepo implements ICuentasRepo {
 
     @Override
     public List<Cuenta> getAccountsByClient(Integer uid) throws Exception {
+        System.out.println("pasando por getAccountsByClient 1");
         Cliente elCliente = clientesRepo.getClientById(uid);
-
+        System.out.println("pasando por getAccountsByClient 2: "+elCliente);
         if (elCliente != null)
             return elCliente.getCuentas();
         else throw new CuentaException("Cliente NO encontrado para cuentas", ErrorCode.NONEXISTINGCLIENT);

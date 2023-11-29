@@ -7,6 +7,7 @@ import es.netmind.mypersonalbankapi.controladores.PrestamosController;
 import java.util.Arrays;
 
 public class Main {
+    /*
     public static void main(String[] args) {
         System.out.println("╔════════════════════════╗");
         System.out.println("║  MY PERSONAL BANK API  ║");
@@ -60,7 +61,7 @@ public class Main {
         else if (argsLength == 2) ClientesController.mostrarDetalle(Integer.valueOf(arg1));
     }
 
-    private static void procesarArgumentosCuentas(String[] args) {
+    private void procesarArgumentosCuentas(String[] args) {
         int argsLength = args.length;
         int uid = Integer.valueOf(args[1]);
         if (argsLength == 3) CuentasController.mostrarLista(uid);
@@ -124,4 +125,5 @@ public class Main {
         System.out.println("\nEVALUAR PRÉSTAMO:");
         System.out.println("clients {uid} loan-evaluation {cantidad > 0}");
     }
+     */
 }

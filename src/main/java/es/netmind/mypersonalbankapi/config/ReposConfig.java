@@ -13,27 +13,32 @@ public class ReposConfig {
 
 
     @Bean
-    //@Profile("default")
+    @Profile("default")
     public IClientesRepo getClientesRepo() {
+        System.out.println("Usando ClientesInDBRepo");
         System.out.println("dburl: " + dbUrl);
         ClientesInDBRepo repo = new ClientesInDBRepo();
         repo.setDb_url(dbUrl);
         return repo;
     }
 
+    @Autowired
+    IClientesRepo clientesRepo;
+
+
     @Bean
     //@Profile("dev")
     public ICuentasRepo createCuentasInMemoryRepo() {
         System.out.println("usando CuentasInMemoryRepo...");
-        CuentasInMemoryRepo repoC = new CuentasInMemoryRepo();
+        CuentasInMemoryRepo repoC = new CuentasInMemoryRepo(clientesRepo);
         return repoC;
     }
 
-    @Bean
-    //@Profile("dev")
-    public IPrestamosRepo createPrestamosInMemoryRepo() {
-        System.out.println("usando PrestamosInMemoryRepo...");
-        PrestamosInMemoryRepo repoP = new PrestamosInMemoryRepo();
-        return repoP;
-    }
+//    @Bean
+//    //@Profile("dev")
+//    public IPrestamosRepo createPrestamosInMemoryRepo() {
+//        System.out.println("usando PrestamosInMemoryRepo...");
+//        PrestamosInMemoryRepo repoP = new PrestamosInMemoryRepo();
+//        return repoP;
+//    }
 }
