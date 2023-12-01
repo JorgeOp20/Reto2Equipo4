@@ -146,6 +146,8 @@ public abstract class Cliente {
     }
 
     public List<Cuenta> getCuentas() {
+
+        System.out.println("Cuentas: " + cuentas);
         return cuentas;
     }
 

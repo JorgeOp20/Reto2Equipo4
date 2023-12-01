@@ -35,15 +35,18 @@ public class CuentasInMemoryRepo implements ICuentasRepo {
             cuentas.add(new Corriente(1, LocalDate.now(), 200.0, 0.5, 0.2));
             cuentas.add(new Ahorro(3, LocalDate.now(), 300.0, 1.1, 0.2));
             cuentas.add(new Ahorro(4, LocalDate.now(), 300.0, 1.1, 0.2));
+            System.out.println("Nuevas cuentas: " + cuentas);
 
             /* Asociamos cuentas */
 
             List<Cliente> clientes = clientesRepo.getAll();
+            System.out.println("****************** CLIENTES 1 ***************************");
             System.out.println(clientes);
             clientes.get(0).asociarCuenta(cuentas.get(0));
             clientes.get(0).asociarCuenta(cuentas.get(3));
             clientes.get(1).asociarCuenta(cuentas.get(2));
             clientes.get(2).asociarCuenta(cuentas.get(1));
+            System.out.println("****************** CLIENTES 2 ***************************");
             System.out.println(clientes);
 
         } catch (Exception e) {
